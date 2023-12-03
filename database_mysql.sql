@@ -1,3 +1,5 @@
+CREATE DATABASE db_contact_management_restful_api;
+
 USE db_contact_management_restful_api;
 
 CREATE TABLE users
@@ -35,3 +37,5 @@ CREATE TABLE addresses
     PRIMARY KEY (id),
     FOREIGN KEY fk_contacts_addresses (contact_id) REFERENCES contacts (id)
 ) ENGINE InnoDB;
+
+SELECT * FROM users;

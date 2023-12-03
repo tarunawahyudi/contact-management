@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stacklab.contactmanagementrestfulapi.entity.User;
 import com.stacklab.contactmanagementrestfulapi.model.RegisterUserRequest;
+import com.stacklab.contactmanagementrestfulapi.model.UpdateUserRequest;
 import com.stacklab.contactmanagementrestfulapi.model.UserResponse;
 import com.stacklab.contactmanagementrestfulapi.model.WebResponse;
 import com.stacklab.contactmanagementrestfulapi.repository.UserRepository;
@@ -206,6 +207,64 @@ class UserControllerTest {
             });
 
             assertNotNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void updateUserUnauthorized() throws Exception {
+
+        UpdateUserRequest request = new UpdateUserRequest();
+
+        mockMvc.perform(
+                patch("/api/v1/users/current")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpectAll(
+                status().isUnauthorized()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertNotNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void updateUserSuccess() throws Exception {
+
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword(BCrypt.hashpw("secret", BCrypt.gensalt()));
+        user.setName("test");
+        user.setToken("test");
+        user.setTokenExpiredAt(System.currentTimeMillis() + 1000000000L);
+        userRepository.save(user);
+
+        UpdateUserRequest request = new UpdateUserRequest();
+        request.setName("Taruna Wahyudi");
+        request.setPassword("taruna12345");
+
+        mockMvc.perform(
+                patch("/api/v1/users/current")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN", "test")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<UserResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertNull(response.getErrors());
+            assertEquals("Taruna Wahyudi", response.getData().getName());
+            assertEquals("test", response.getData().getUsername());
+
+            User userDB = userRepository.findById("test").orElse(null);
+            assertNotNull(userDB);
+
+            assertTrue(BCrypt.checkpw("taruna12345", userDB.getPassword()));
         });
     }
 
