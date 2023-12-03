@@ -7,9 +7,7 @@ import com.stacklab.contactmanagementrestfulapi.model.WebResponse;
 import com.stacklab.contactmanagementrestfulapi.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ContactController {
@@ -24,6 +22,15 @@ public class ContactController {
     )
     public WebResponse<ContactResponse> create(User user, @RequestBody CreateContactRequest request) {
         ContactResponse contactResponse = contactService.create(user, request);
+        return WebResponse.<ContactResponse>builder().data(contactResponse).build();
+    }
+
+    @GetMapping(
+            path = "/api/v1/contacts/{contactId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<ContactResponse> get(User user, @PathVariable("contactId") String contactId) {
+        ContactResponse contactResponse = contactService.get(user, contactId);
         return WebResponse.<ContactResponse>builder().data(contactResponse).build();
     }
 }
