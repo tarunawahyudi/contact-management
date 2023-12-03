@@ -4,6 +4,7 @@ import com.stacklab.contactmanagementrestfulapi.entity.Contact;
 import com.stacklab.contactmanagementrestfulapi.entity.User;
 import com.stacklab.contactmanagementrestfulapi.model.ContactResponse;
 import com.stacklab.contactmanagementrestfulapi.model.CreateContactRequest;
+import com.stacklab.contactmanagementrestfulapi.model.UpdateContactRequest;
 import com.stacklab.contactmanagementrestfulapi.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,5 +56,24 @@ public class ContactService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact Not Found"));
 
         return toContactResponse(contact);
+    }
+
+    @Transactional
+    public ContactResponse update(User user, UpdateContactRequest request) {
+
+        validationService.validate(request);
+
+        Contact contact = contactRepository.findFirstByUserAndId(user, request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contact Not Found"));
+
+        contact.setFirstName(request.getFirstName());
+        contact.setLastName(request.getLastName());
+        contact.setEmail(request.getEmail());
+        contact.setPhone(request.getPhone());
+
+        contactRepository.save(contact);
+
+        return toContactResponse(contact);
+
     }
 }
