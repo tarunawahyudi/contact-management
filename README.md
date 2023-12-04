@@ -20,7 +20,7 @@ The Contact Management API provides endpoints to manage and retrieve contact inf
 2. Clone the repository:
 
     ```bash
-    git clone https://github.com/tarunawahyudi/contact-management-api.git
+    git clone https://github.com/tarunawahyudi/contact-management.git
     ```
 
 3. Navigate to the project directory:
