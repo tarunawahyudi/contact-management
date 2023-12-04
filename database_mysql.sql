@@ -41,3 +41,9 @@ CREATE TABLE addresses
 SELECT * FROM users;
 
 SHOW DATABASES;
+
+DELETE FROM users;
+
+DELETE FROM contacts;
+
+DELETE FROM addresses;

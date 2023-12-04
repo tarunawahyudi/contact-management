@@ -68,7 +68,7 @@ public class AddressController {
 
     @DeleteMapping(
             path = "/api/v1/contacts/{contactId}/addresses/{addressId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public WebResponse<String> remove(
             User user,

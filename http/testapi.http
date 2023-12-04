@@ -1,0 +1,115 @@
+### Register User
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Taruna Wahyudi",
+  "username": "yudi",
+  "password": "secret"
+}
+
+### Login User
+POST http://localhost:8080/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+"username": "yudi",
+"password":"secret"
+}
+
+### Get User
+GET http://localhost:8080/api/v1/users/current
+Accept:application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+### Update User
+PATCH http://localhost:8080/api/v1/users/current
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+{
+  "name":"nilam"
+}
+
+### Create Contact
+POST http://localhost:8080/api/v1/contacts
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+{
+  "firstName": "Andi",
+  "lastName": "Odang",
+  "email": "bondan@example.com",
+  "phone": "012312312312312"
+}
+
+### Search Contact
+GET http://localhost:8080/api/v1/contacts
+Accept: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+### Get Contact
+GET http://localhost:8080/api/v1/contacts/079634c6-8410-47c1-872b-2e64038ff966
+Accept: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+### Update Contact
+PUT http://localhost:8080/api/v1/contacts/079634c6-8410-47c1-872b-2e64038ff966
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+{
+  "firstName": "Bambang",
+  "lastName": "Pamungkas",
+  "email": "bambang@example.com",
+  "phone": "11111111"
+}
+
+### Delete Contact
+DELETE http://localhost:8080/api/v1/contacts/fa90682f-a9fa-4108-9375-e2015944d269
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+### Create Address
+POST http://localhost:8080/api/v1/contacts/fa90682f-a9fa-4108-9375-e2015944d269/addresses
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+{
+  "street": "jalan",
+  "city": "Bekasi",
+  "province": "Jawa Barat",
+  "country": "Indonesia",
+  "postalCode": "122223"
+}
+
+### List Address
+GET http://localhost:8080/api/v1/contacts/fa90682f-a9fa-4108-9375-e2015944d269/addresses
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+### Update Address
+PUT http://localhost:8080/api/v1/contacts/fa90682f-a9fa-4108-9375-e2015944d269/addresses/799144f1-6cb3-4da8-bf27-8ac7e373a4d0
+Accept: application/json
+Content-Type: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
+
+{
+  "street": "jalan Baru",
+  "city": "Bandung",
+  "province": "Jawa Barat",
+  "country": "Indonesia",
+  "postalCode": "122223"
+}
+
+### Delete Address
+DELETE http://localhost:8080/api/v1/contacts/fa90682f-a9fa-4108-9375-e2015944d269/addresses/799144f1-6cb3-4da8-bf27-8ac7e373a4d0
+Accept: application/json
+X-API-TOKEN: 2813a82a-3ee6-4654-980d-b497e84f0ca4
