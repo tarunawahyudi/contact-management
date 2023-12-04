@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -299,6 +300,58 @@ class AddressControllerTest {
             assertEquals("OK", response.getData());
 
             assertFalse(addressRepository.existsById("test"));
+        });
+    }
+
+    @Test
+    void listAddressNotFound() throws Exception {
+
+        mockMvc.perform(
+                get("/api/v1/contacts/salah/addresses" )
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN", "test")
+        ).andExpectAll(
+                status().isNotFound()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertNotNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void listAddressSuccess() throws Exception {
+
+        Contact contact = contactRepository.findById("test").orElseThrow();
+        for (int i = 0; i < 5; i++) {
+
+            Address address = new Address();
+            address.setContact(contact);
+            address.setId("test " + i);
+            address.setStreet("Jalan");
+            address.setCity("Jakarta");
+            address.setProvince("DKI Jakarta");
+            address.setCountry("Indonesia");
+            address.setPostalCode("12345");
+
+            addressRepository.save(address);
+        }
+
+        mockMvc.perform(
+                get("/api/v1/contacts/test/addresses" )
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN", "test")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<List<AddressResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertNull(response.getErrors());
+            assertEquals(5, response.getData().size());
         });
     }
 
