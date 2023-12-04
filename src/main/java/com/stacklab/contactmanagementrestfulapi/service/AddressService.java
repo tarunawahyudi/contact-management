@@ -5,6 +5,7 @@ import com.stacklab.contactmanagementrestfulapi.entity.Contact;
 import com.stacklab.contactmanagementrestfulapi.entity.User;
 import com.stacklab.contactmanagementrestfulapi.model.AddressResponse;
 import com.stacklab.contactmanagementrestfulapi.model.CreateAddressRequest;
+import com.stacklab.contactmanagementrestfulapi.model.UpdateAddressRequest;
 import com.stacklab.contactmanagementrestfulapi.repository.AddressRepository;
 import com.stacklab.contactmanagementrestfulapi.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,26 @@ public class AddressService {
         Address address = addressRepository.findFirstByContactAndId(contact, addressId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Address is Not Found"));
 
+        return toAddressResponse(address);
+    }
+
+    @Transactional
+    public AddressResponse update(User user, UpdateAddressRequest request) {
+        validationService.validate(request);
+        Contact contact = contactRepository.findFirstByUserAndId(user, request.getContactId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "contact is not found"));
+
+
+        Address address = addressRepository.findFirstByContactAndId(contact, request.getAddressId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Address is Not Found"));
+
+        address.setStreet(request.getStreet());
+        address.setCity(request.getCity());
+        address.setProvince(request.getProvince());
+        address.setCountry(request.getCountry());
+        address.setPostalCode(request.getPostalCode());
+
+        addressRepository.save(address);
         return toAddressResponse(address);
     }
 }

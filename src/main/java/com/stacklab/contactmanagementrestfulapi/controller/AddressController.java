@@ -3,6 +3,7 @@ package com.stacklab.contactmanagementrestfulapi.controller;
 import com.stacklab.contactmanagementrestfulapi.entity.User;
 import com.stacklab.contactmanagementrestfulapi.model.AddressResponse;
 import com.stacklab.contactmanagementrestfulapi.model.CreateAddressRequest;
+import com.stacklab.contactmanagementrestfulapi.model.UpdateAddressRequest;
 import com.stacklab.contactmanagementrestfulapi.model.WebResponse;
 import com.stacklab.contactmanagementrestfulapi.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,24 @@ public class AddressController {
     ) {
         AddressResponse response = addressService.get(user, contactId, addressId);
         return WebResponse.<AddressResponse>builder().data(response).build();
+    }
+
+    @PutMapping(
+            path = "/api/v1/contacts/{contactId}/addresses/{addressId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<AddressResponse> update(
+            User user,
+            @RequestBody UpdateAddressRequest request,
+            @PathVariable("contactId") String contactId,
+            @PathVariable("addressId") String addressId
+    ) {
+
+        request.setContactId(contactId);
+        request.setAddressId(addressId);
+        AddressResponse response = addressService.update(user, request);
+        return WebResponse.<AddressResponse>builder().data(response).build();
+
     }
 }

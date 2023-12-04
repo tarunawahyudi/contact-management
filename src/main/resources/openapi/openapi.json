@@ -1,0 +1,1054 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Contact Management",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Taruna Wahyudi",
+      "email": "wahyuditaruna97@gmail.com",
+      "url": "https://github.com/tarunawahyudi"
+    },
+    "license": {
+      "name": "APACHE 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "User API Spec"
+        ],
+        "summary": "Register User",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OK"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Response Body (Bad Request)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "default": "Username must not blank, ???"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "username": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              },
+              "example": {
+                "name": "Taruna Wahyudi",
+                "username": "taruna",
+                "password": "secret"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "User API Spec"
+        ],
+        "summary": "Login User",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "default": "TOKEN"
+                        },
+                        "expiredAt": {
+                          "type": "integer",
+                          "default": 2342342423423,
+                          "description": "milliseconds"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Response Body Failed (401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "default": "Username or password wrong"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "User API Spec"
+        ],
+        "summary": "Get User",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User Success"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Response Body (Failed, 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "User API Spec"
+        ],
+        "summary": "Update User",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User Success"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Response Body (Failed, 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "delete": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "User API Spec"
+        ],
+        "summary": "Logout User",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OK"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API Spec"
+        ],
+        "summary": "Create Contact",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "required": true
+                        },
+                        "firstName": {
+                          "type": "string",
+                          "required": true
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "required": true
+                        },
+                        "email": {
+                          "type": "string",
+                          "required": true
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": "random-string",
+                    "firstName": "Taruna",
+                    "lastName": "Wahyudi",
+                    "email": "wahyuditaruna97@gmail.com",
+                    "phone": "08xxxxxxxxx"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "errors": "Email format invalid, phone format invalid, ..."
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "phone": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Contact first name or last name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Taruna"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "Contact phone",
+            "schema": {
+              "type": "string"
+            },
+            "example": "+123456789"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Contact email",
+            "schema": {
+              "type": "string"
+            },
+            "example": "wahyuditaruna97@gmail.com"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (start from 0)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 0
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 10
+          }
+        ],
+        "tags": [
+          "Contact API Spec"
+        ],
+        "summary": "Search Contact",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "paging": {
+                      "type": "object",
+                      "properties": {
+                        "currentPage": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "random-string",
+                      "firstName": "Taruna",
+                      "lastName": "Wahyudi",
+                      "email": "wahyuditaruna97@gmail.com",
+                      "phone": "+123456789"
+                    }
+                  ],
+                  "paging": {
+                    "currentPage": 0,
+                    "totalPage": 10,
+                    "size": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{idContact}": {
+      "put": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API Spec"
+        ],
+        "summary": "Update Contact",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "random-string",
+                    "firstName": "Taruna",
+                    "lastName": "Wahyudi",
+                    "email": "wahyuditaruna97@gmail.com",
+                    "phone": "+123456789"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Email format invalid, phone format invalid, ..."
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "email": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "phone": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API Spec"
+        ],
+        "summary": "Get Contact",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "random-string",
+                    "firstName": "Taruna",
+                    "lastName": "Wahyudi",
+                    "email": "wahyuditaruna97@gmail.com",
+                    "phone": "+1234566789"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Response Body (Failed, 404)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Contact is not found"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ]
+      },
+      "delete": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API Spec"
+        ],
+        "summary": "Remove Contact",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": "OK"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact is not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Contact is not found"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ]
+      }
+    },
+    "/contacts/{idContact}/addresses/{idAddress}": {
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Address API Spec"
+        ],
+        "summary": "Get Address",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "randomstring",
+                    "street": "Jalan Jalan",
+                    "city": "Jakarta",
+                    "province": "DKI Jakarta",
+                    "country": "Indonesia",
+                    "postalCode": "123456"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Address is not found"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          },
+          {
+            "name": "idAddress",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ]
+      }
+    },
+    "/contacts/{idContact}/addresses": {
+      "post": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Address API Spec"
+        ],
+        "summary": "Create Address",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "random-string",
+                    "street": "Jalan Jalan",
+                    "city": "Jakarta",
+                    "province": "DKI Jakarta",
+                    "country": "Indonesia",
+                    "postalCode": "123456"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Contact is not found"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "idContact",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "street": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "city": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "province": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "country": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "postalCode": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              },
+              "example": {
+                "street": "Jalan Jalan",
+                "city": "Jakarta",
+                "province": "DKI Jakarta",
+                "country": "Indonesia",
+                "postalCode": "123456"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Address API Spec"
+        ],
+        "summary": "Update Address",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "randomstring",
+                    "street": "Jalan Jalan",
+                    "city": "Jakarta",
+                    "province": "DKI Jakarta",
+                    "country": "Indonesia",
+                    "postalCode": "123456"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Address is not found"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RequestBody Address"
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Address API Spec"
+        ],
+        "summary": "Remove Address",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OK"
+                },
+                "example": {
+                  "data": "OK"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Address is not found"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ]
+      },
+      "get": {
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "tags": [
+          "Address API Spec"
+        ],
+        "summary": "List Address",
+        "responses": {
+          "200": {
+            "description": "Response Body (Success)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "random-string",
+                      "street": "Jalan Jalan",
+                      "city": "Jakarta",
+                      "province": "DKI Jakarta",
+                      "country": "Indonesia",
+                      "postalCode": "123456"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Response Body (Failed)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": "Contact is not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-TOKEN",
+        "description": "Authentication for access RESTful API (Required)"
+      }
+    },
+    "requestBodies": {
+      "RequestBody Address": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "required": true
+                },
+                "city": {
+                  "type": "string",
+                  "required": true
+                },
+                "province": {
+                  "type": "string",
+                  "required": true
+                },
+                "country": {
+                  "type": "string",
+                  "required": true
+                },
+                "postalCode": {
+                  "type": "string",
+                  "required": true
+                }
+              }
+            },
+            "example": {
+              "street": "Jalan Jalan",
+              "city": "Jakarta",
+              "province": "DKI Jakarta",
+              "country": "Indonesia",
+              "postalCode": "123456"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "contactId": {
+        "name": "idContact",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number",
+          "default": 1
+        }
+      }
+    },
+    "schemas": {
+      "OK": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "default": "OK"
+          }
+        }
+      },
+      "unauthorized": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "string",
+            "default": "Unauthorized"
+          }
+        }
+      },
+      "User Success": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string",
+                "default": "taruna"
+              },
+              "name": {
+                "type": "string",
+                "default": "Taruna Wahyudi"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
