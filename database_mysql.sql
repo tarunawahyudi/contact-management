@@ -39,3 +39,5 @@ CREATE TABLE addresses
 ) ENGINE InnoDB;
 
 SELECT * FROM users;
+
+SHOW DATABASES;
