@@ -26,7 +26,7 @@ The Contact Management API provides endpoints to manage and retrieve contact inf
 3. Navigate to the project directory:
 
     ```bash
-    cd contact-management-api
+    cd contact-management
     ```
 
 4. Build the project:
@@ -40,7 +40,7 @@ The Contact Management API provides endpoints to manage and retrieve contact inf
 1. Run the application:
 
     ```bash
-    java -jar target/contact-management-api.jar
+    java -jar target/contact-management.jar
     ```
 
 2. Access the API documentation at [http://localhost:8080/docs](http://localhost:8080/docs) to explore and test the endpoints.
